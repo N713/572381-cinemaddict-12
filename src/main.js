@@ -1,5 +1,3 @@
-`use strict`;
-
 const header = document.body.querySelector(`.header`);
 const main = document.body.querySelector(`.main`);
 const footerStatictics = document.body.querySelector(`.footer__statistics`);
@@ -86,7 +84,7 @@ render(header, `beforeend`, getUserStatusTemplate());
 });
 
 const films = main.querySelector(`.films`);
-[1, 2].forEach((item) => {
+[1, 2].forEach(() => {
   render(films, `beforeend`, getExtraFilmsSectionTemplate());
 });
 
