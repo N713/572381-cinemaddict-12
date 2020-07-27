@@ -1,3 +1,5 @@
+"use strict";
+
 const header = document.body.querySelector(`.header`);
 const main = document.body.querySelector(`.main`);
 const footerStatictics = document.body.querySelector(`.footer__statistics`);
@@ -76,7 +78,7 @@ const getFooterStaticsticsTemplate = () => {
 
 const render = (container, position, template) => {
   container.insertAdjacentHTML(position, template);
-}
+};
 
 render(header, `beforeend`, getUserStatusTemplate());
 [getNavigationTemplate(), getSortingTemplate(), getFilmsSectionTemplate()].forEach((template) => {
@@ -95,7 +97,7 @@ render(filmsList, `beforeend`, getShowMoreButtonTemplate());
 const filmsContainer = filmsList.querySelector(`.films-list__container`);
 for (let i = 0; i < 10; i++) {
   render(filmsContainer, `beforeend`, getFilmCardTemplate());
-};
+}
 
 const extraFilmsContainers = films.querySelectorAll(`.films-list--extra`);
 extraFilmsContainers.forEach((container) => {
