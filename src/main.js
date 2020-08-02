@@ -1,112 +1,81 @@
-"use strict";
+import {utils} from "./components/site-utils";
+import {filters} from "./mock/filters";
+import {cards} from "./mock/card";
 
-const header = document.body.querySelector(`.header`);
-const main = document.body.querySelector(`.main`);
-const footerStatictics = document.body.querySelector(`.footer__statistics`);
+import FilmsSectionComponent from "./components/site-films-section";
+import TopRatedFilmsComponent from "./components/site-films-top";
+import MostCommentedFilmsComponent from "./components/site-most-commented";
+import NavigationComponent from "./components/site-navigation";
+import SearchComponent from "./components/site-search";
+import ProfileComponent from "./components/site-profile";
+import SortingComponent from "./components/site-sorting";
+import FilmsListComponent from "./components/site-films-list";
+import ShowMoreButtonComponent from "./components/site-show-more-button";
+import PageController from "./controllers/page-controller";
+import MovieController from "./controllers/site-movie-controller";
 
-const getUserStatusTemplate = () => {
-  return (`<section class="header__profile profile">
-            <p class="profile__rating">Movie Buff</p>
-            <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-          </section>`);
-};
+import Movies from "./models/movies";
 
-const getNavigationTemplate = () => {
-  return (`<nav class="main-navigation">
-            <div class="main-navigation__items">
-              <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-              <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
-              <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">4</span></a>
-              <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
-            </div>
-            <a href="#stats" class="main-navigation__additional">Stats</a>
-          </nav>`);
-};
+const header = document.querySelector(`.header`);
+const main = document.querySelector(`.main`);
 
-const getSortingTemplate = () => {
-  return (`<ul class="sort">
-            <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
-            <li><a href="#" class="sort__button">Sort by date</a></li>
-            <li><a href="#" class="sort__button">Sort by rating</a></li>
-          </ul>`);
-};
+const NUMBER_OF_CARDS = 5;
+const SHOW_BY_BUTTON = 5;
+const NUMBER_OF_EXTRA_CARDS = 2;
+const NUMBER_TO_SHOW = 20;
 
-const getFilmsSectionTemplate = () => {
-  return (`<section class="films">
-    <section class="films-list">
-      <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
-    </section>`);
-};
+const headerElements = [new SearchComponent().getElement(), new ProfileComponent().getElement()];
+utils.renderElements(headerElements, header);
 
-const getFilmsContainerTemplate = () => {
-  return (`<div class="films-list__container"></div>`);
-};
+const mainElements = [new NavigationComponent(filters).getElement(), new SortingComponent().getElement(),
+  new FilmsSectionComponent().getElement()];
+utils.renderElements(mainElements, main);
 
-const getFilmCardTemplate = () => {
-  return (`<article class="film-card">
-            <h3 class="film-card__title">The Dance of Life</h3>
-            <p class="film-card__rating">8.3</p>
-            <p class="film-card__info">
-              <span class="film-card__year">1929</span>
-              <span class="film-card__duration">1h 55m</span>
-              <span class="film-card__genre">Musical</span>
-            </p>
-            <img src="./images/posters/the-dance-of-life.jpg" alt="" class="film-card__poster">
-            <p class="film-card__description">Burlesque comic Ralph "Skid" Johnson (Skelly), and specialty dancer Bonny Lee King (Carroll), end up together on a cold, rainy night at a tr…</p>
-            <a class="film-card__comments">5 comments</a>
-            <form class="film-card__controls">
-              <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-              <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-              <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
-            </form>
-          </article>`);
-};
+const filmsSection = main.querySelector(`.films`);
+const filmsSectionElements = [new FilmsListComponent().getElement(), new TopRatedFilmsComponent().getElement(),
+  new MostCommentedFilmsComponent().getElement()];
+utils.renderElements(filmsSectionElements, filmsSection);
 
-const getShowMoreButtonTemplate = () => {
-  return (`<button class="films-list__show-more">Show more</button>`);
-};
+const filmsList = filmsSection.querySelector(`.films-list`);
+const filmsListContainer = filmsSection.querySelector(`.films-list .films-list__container`);
+utils.render(filmsList, new ShowMoreButtonComponent().getElement(), utils.Position.BEFOREEND);
 
-const getExtraFilmsSectionTemplate = () => {
-  return (`<section class="films-list--extra">
-            <h2 class="films-list__title">Top rated</h2>
-          </section>`);
-};
+const moviesModel = new Movies();
+moviesModel.setMovies(cards);
+const movies = moviesModel.getMovies();
 
-const getFooterStaticsticsTemplate = () => {
-  return (`<p>130 291 movies inside</p>`);
-};
+const filmsController = new PageController(filmsListContainer, movies, 0, NUMBER_OF_CARDS);
+filmsController.init();
 
-const render = (container, position, template) => {
-  container.insertAdjacentHTML(position, template);
-};
+const extras = filmsSection.querySelectorAll(`.films-list--extra .films-list__container`);
+const [topRated, mostCommented] = extras;
 
-render(header, `beforeend`, getUserStatusTemplate());
-[getNavigationTemplate(), getSortingTemplate(), getFilmsSectionTemplate()].forEach((template) => {
-  render(main, `beforeend`, template);
-});
+const topController = new PageController(topRated, movies, NUMBER_TO_SHOW, NUMBER_TO_SHOW + NUMBER_OF_EXTRA_CARDS);
+topController.init();
 
-const films = main.querySelector(`.films`);
-[1, 2].forEach(() => {
-  render(films, `beforeend`, getExtraFilmsSectionTemplate());
-});
+const mostCommentedController = new PageController(mostCommented, movies
+  , NUMBER_TO_SHOW + NUMBER_OF_EXTRA_CARDS, NUMBER_TO_SHOW + 2 * NUMBER_OF_EXTRA_CARDS);
+mostCommentedController.init();
 
-const filmsList = main.querySelector(`.films-list`);
-render(filmsList, `beforeend`, getFilmsContainerTemplate());
-render(filmsList, `beforeend`, getShowMoreButtonTemplate());
+const body = document.querySelector(`body`);
+const movieController = new MovieController(movies, filmsController._onDataChange.bind(filmsController));
+movieController.init();
 
-const filmsContainer = filmsList.querySelector(`.films-list__container`);
-for (let i = 0; i < 10; i++) {
-  render(filmsContainer, `beforeend`, getFilmCardTemplate());
-}
+let counter = NUMBER_OF_CARDS;
 
-const extraFilmsContainers = films.querySelectorAll(`.films-list--extra`);
-extraFilmsContainers.forEach((container) => {
-  render(container, `beforeend`, getFilmsContainerTemplate());
+const showMoreCards = () => {
+  const showedCards = counter;
+  const cardsToShow = counter + SHOW_BY_BUTTON;
+  counter += SHOW_BY_BUTTON;
 
-  const extraFilmsContainer = container.querySelector(`.films-list__container`);
-  for (let j = 0; j < 2; j++) {
-    render(extraFilmsContainer, `beforeend`, getFilmCardTemplate());
+  utils.renderCards(movies, showedCards, cardsToShow, filmsListContainer);
+
+  if (counter >= NUMBER_TO_SHOW) {
+    showMoreButton.remove();
   }
-});
+};
 
-render(footerStatictics, `beforeend`, getFooterStaticsticsTemplate());
+const showMoreButton = filmsSection.querySelector(`.films-list__show-more`);
+showMoreButton.addEventListener(`click`, showMoreCards);
+
+export {body};

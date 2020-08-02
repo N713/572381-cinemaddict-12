@@ -172,7 +172,7 @@ button {
   position: absolute;
   top: 50%;
   left: 19%;
-
+    
   width: 20px;
   height: 1px;
 
@@ -212,16 +212,9 @@ button {
 .main-navigation {
   border-bottom: solid 2px var(--outline-color);
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  flex-basis: 100%;
   font-size: var(--font-size-bigger);
   font-weight: 800;
-}
-
-.main-navigation__items {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
 }
 
 .main-navigation__item {
@@ -238,15 +231,13 @@ button {
   width: 1em;
 }
 
-.main-navigation__additional {
-  margin-left: auto;
-  padding: var(--vertical-gap) 0;
-  color: var(--text-color);
+.main-navigation__item--active {
+  color: var(--text-color-active);
 }
 
-.main-navigation__item--active,
-.main-navigation__additional--active {
-  color: var(--text-color-active);
+.main-navigation__item--additional {
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .result {
@@ -275,7 +266,7 @@ button {
   margin-right: 32px;
   padding: 0;
 
-  color: #ffffff;
+  color: #ffffff;  
   text-decoration: none;
 
   background-color: transparent;
@@ -290,7 +281,7 @@ button {
 }
 
 .sort__button--active {
-  color: #ffe800;
+  color: #ffe800;  
 }
 
 .films {
@@ -521,6 +512,15 @@ button {
   margin-right: auto;
 }
 
+@keyframes bounceInRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
 .details {
   overflow: hidden;
 }
@@ -533,6 +533,7 @@ button {
   left: 10%;
   z-index: 1;
   background-color: #212126;
+  animation: bounceInRight 0.3s;
   box-shadow: -3px 2px 13px 0 #141628;
   overflow-x: hidden;
   overflow-y: auto;
@@ -996,7 +997,7 @@ button {
 }
 .statistic__rank {
   display: flex;
-  align-items: center;
+  align-items: center; 
   margin: 0;
   margin-bottom: 34px;
   font-size: 50px;
