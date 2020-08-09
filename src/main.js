@@ -16,13 +16,13 @@ import MovieController from "./controllers/site-movie-controller";
 
 import Movies from "./models/movies";
 
-const header = document.querySelector(`.header`);
-const main = document.querySelector(`.main`);
-
 const NUMBER_OF_CARDS = 5;
 const SHOW_BY_BUTTON = 5;
 const NUMBER_OF_EXTRA_CARDS = 2;
 const NUMBER_TO_SHOW = 20;
+
+const header = document.querySelector(`.header`);
+const main = document.querySelector(`.main`);
 
 const headerElements = [new SearchComponent().getElement(), new ProfileComponent().getElement()];
 utils.renderElements(headerElements, header);
@@ -53,8 +53,8 @@ const [topRated, mostCommented] = extras;
 const topController = new PageController(topRated, movies, NUMBER_TO_SHOW, NUMBER_TO_SHOW + NUMBER_OF_EXTRA_CARDS);
 topController.init();
 
-const mostCommentedController = new PageController(mostCommented, movies
-  , NUMBER_TO_SHOW + NUMBER_OF_EXTRA_CARDS, NUMBER_TO_SHOW + 2 * NUMBER_OF_EXTRA_CARDS);
+const mostCommentedController = new PageController(mostCommented, movies,
+  NUMBER_TO_SHOW + NUMBER_OF_EXTRA_CARDS, NUMBER_TO_SHOW + 2 * NUMBER_OF_EXTRA_CARDS);
 mostCommentedController.init();
 
 const body = document.querySelector(`body`);
