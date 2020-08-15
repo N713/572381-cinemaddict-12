@@ -3,7 +3,7 @@ import {utils} from "../components/site-utils";
 const COMMENTS_NUMBER = 4;
 const NUMBER_OF_TITLES = 7;
 const STRINGS_TO_DESCRIPTION = 3;
-const NUMBER_OF_CARDS = 20;
+const NUMBER_OF_CARDS = 25;
 const NUMBER_OF_EXTRAS = 2;
 const NUMBER_OF_POPUPS = 1;
 
