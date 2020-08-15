@@ -19,7 +19,7 @@ import Movies from "./models/movies";
 const NUMBER_OF_CARDS = 5;
 const SHOW_BY_BUTTON = 5;
 const NUMBER_OF_EXTRA_CARDS = 2;
-const NUMBER_TO_SHOW = 20;
+const NUMBER_TO_SHOW = 25;
 
 const header = document.querySelector(`.header`);
 const main = document.querySelector(`.main`);
